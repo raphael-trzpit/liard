@@ -1,6 +1,10 @@
 package main
 
-import "github.com/raphael-trzpit/liard/cmd"
+import (
+	"os"
+
+	"github.com/raphael-trzpit/liard/cmd"
+)
 
 func main() {
 	q := cmd.Question{
@@ -10,5 +14,5 @@ func main() {
 		Check:     func(s string) bool { return s == "yes" },
 	}
 	qs := []*cmd.Question{&q, &q}
-	cmd.AskQuestion(qs...)
+	cmd.AskQuestion(os.Stdin, os.Stdout, qs...)
 }

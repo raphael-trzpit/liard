@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 	"log"
 )
 
@@ -14,23 +15,23 @@ type Question struct {
 }
 
 // Ask one or several questions.
-func AskQuestion(qs ...*Question) map[string]string {
+func AskQuestion(in io.Reader, out io.Writer, qs ...*Question) map[string]string {
 	m := make(map[string]string)
 
 	for _, q := range qs {
 		var response string
 		var isValid bool = false
 
-		fmt.Println(q.Text)
+		fmt.Fprintln(out, q.Text)
 
 		for isValid == false {
-			_, err := fmt.Scanln(&response)
+			_, err := fmt.Fscanln(in, &response)
 			if err != nil {
 				log.Fatal(err)
 			}
 			isValid = q.Check(response)
 			if isValid == false {
-				fmt.Println(q.ErrorText)
+				fmt.Fprintln(out, q.ErrorText)
 			}
 		}
 		m[q.Label] = response
