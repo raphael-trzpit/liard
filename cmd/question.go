@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -15,7 +16,7 @@ type Question struct {
 }
 
 // Ask one or several questions.
-func AskQuestion(in io.Reader, out io.Writer, qs ...*Question) map[string]string {
+func AskQuestion(in io.Reader, out io.Writer, qs ...*Question) (map[string]string, error) {
 	m := make(map[string]string)
 
 	for _, q := range qs {
@@ -26,6 +27,10 @@ func AskQuestion(in io.Reader, out io.Writer, qs ...*Question) map[string]string
 
 		for isValid == false {
 			_, err := fmt.Fscanln(in, &response)
+			if err == io.EOF {
+				error := errors.New("All Questions haven't been answered")
+				return m, error
+			}
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -37,5 +42,5 @@ func AskQuestion(in io.Reader, out io.Writer, qs ...*Question) map[string]string
 		m[q.Label] = response
 	}
 
-	return m
+	return m, nil
 }
