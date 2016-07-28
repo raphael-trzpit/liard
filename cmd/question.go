@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-// A question asked by command line.
+// Question : a question asked by command line.
 type Question struct {
 	Text      string            // The text of the question that will be displayed.
 	Label     string            // Label to identify the question.
@@ -15,7 +15,7 @@ type Question struct {
 	ErrorText string            // Text displayed if check function fails.
 }
 
-// Ask one or several questions.
+// AskQuestion :  one or several questions are asks to the user.
 func AskQuestion(in io.Reader, out io.Writer, qs ...*Question) (map[string]string, error) {
 	m := make(map[string]string)
 
