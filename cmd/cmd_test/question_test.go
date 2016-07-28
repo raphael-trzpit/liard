@@ -79,7 +79,12 @@ func TestAskQuestions(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		defer in.Close()
+		defer func() {
+			err = in.Close()
+			if err != nil {
+				log.Fatal(err)
+			}
+		}()
 
 		for _, s := range qt.ins {
 			_, err = in.WriteString(s + "\n")
@@ -93,7 +98,10 @@ func TestAskQuestions(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		cmd.AskQuestion(in, &out, qt.qs...)
+		_, err = cmd.AskQuestion(in, &out, qt.qs...)
+		if err != nil {
+			t.Fatal(err)
+		}
 		output := strings.Split(out.String(), "\n")
 		log.Print(output)
 

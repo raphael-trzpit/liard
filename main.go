@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	"github.com/raphael-trzpit/liard/cmd"
@@ -14,5 +15,9 @@ func main() {
 		Check:     func(s string) bool { return s == "yes" },
 	}
 	qs := []*cmd.Question{&q, &q}
-	cmd.AskQuestion(os.Stdin, os.Stdout, qs...)
+
+	_, err := cmd.AskQuestion(os.Stdin, os.Stdout, qs...)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
