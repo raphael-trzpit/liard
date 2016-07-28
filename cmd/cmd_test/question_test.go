@@ -46,10 +46,10 @@ func TestAskQuestions(t *testing.T) {
 					Text:      "question",
 					Label:     "a",
 					ErrorText: "fail",
-					Check:     func(s string) bool { return false },
+					Check:     func(s string) bool { return s == "success" },
 				},
 			},
-			[]string{"test"},
+			[]string{"test", "success"},
 			[]string{"question", "fail"},
 		},
 		{
@@ -103,7 +103,6 @@ func TestAskQuestions(t *testing.T) {
 			t.Fatal(err)
 		}
 		output := strings.Split(out.String(), "\n")
-		log.Print(output)
 
 		for i, e := range qt.outs {
 			if len(output) < i+2 {
